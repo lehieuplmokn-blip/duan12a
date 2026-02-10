@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Tường Lớp 12A – Tri Ân & Kỷ Niệm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            height: 60vh;
+            min-height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 5.5rem;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            margin-bottom: 12px;
+        }
+
+        header .subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            max-width: 800px;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(26, 32, 44, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1.8rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #60a5fa;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -6px;
+            left: 50%;
+            background: #60a5fa;
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 70%;
+        }
+
+        /* Main */
+        main {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-8px);
+        }
+
+        section h2 {
+            color: #1e40af;
+            font-size: 2.6rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: #60a5fa;
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Ảnh với overlay caption */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-item .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 1.2rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .caption {
+            transform: translateY(0);
+        }
+
+        /* Video */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Bình luận */
+        .comment {
+            background: #f8fafc;
+            border-left: 5px solid #60a5fa;
+            padding: 1.2rem 1.5rem;
+            margin: 1.2rem 0;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .comment:hover {
+            background: #eff6ff;
+            transform: translateX(8px);
+        }
+
+        /* Modal zoom ảnh */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.92);
+            overflow: auto;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 92%;
+            max-height: 92vh;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 12px;
+        }
+
+        .close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close:hover {
+            color: #60a5fa;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .social-icons a {
+            color: #94a3b8;
+            font-size: 1.6rem;
+            margin: 0 1rem;
+            transition: 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #60a5fa;
+            transform: translateY(-4px);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #60a5fa;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 4rem; }
+            header { height: 50vh; min-height: 400px; }
+            nav a { margin: 0 1rem; font-size: 0.95rem; }
+            section { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Báo Tường Lớp 12A</h1>
+        <p class="subtitle">Tri Ân Thầy Cô – Kỷ Niệm Tuổi Học Trò</p>
+    </header>
+
+    <nav>
+        <a href="#loi-ngo">Lời Ngỏ</a>
+        <a href="#bai-viet">Bài Viết</a>
+        <a href="#anh">Ảnh </a>
+        <a href="#bay-to">Góc Bày Tỏ</a>
+        <a href="#binh-luan">Góc Bình Luận</a>
+    </nav>
+
+    <main>
+        <section id="loi-ngo">
+            <h2>Lời Ngỏ</h2>
+            <p>Kính gửi quý thầy cô và các bạn thân mến,</p>
+            <p>Những năm tháng ngồi dưới mái trường thân yêu có lẽ sẽ trở thành miền ký ức đẹp đẽ nhất trong hành trang cuộc đời mỗi chúng em. Đó là quãng thời gian của tuổi trẻ hồn nhiên, của những buổi học rộn ràng tiếng cười, của những lo lắng vụn vặt xen lẫn ước mơ lớn dần theo năm tháng. Dưới sự dìu dắt tận tâm, bao dung và đầy yêu thương của thầy cô, chúng em không chỉ được trang bị tri thức mà còn học cách làm người, học cách yêu thương, sẻ chia và trưởng thành.
+
+            Ba năm học – một chặng đường không quá dài nhưng đủ để gắn kết chúng em thành một tập thể, đủ để mỗi kỷ niệm trở nên thân thương và khó quên. Đó là những giờ ra chơi vội vã, những lần cùng nhau cố gắng trước kỳ thi, những buổi sinh hoạt lớp chan chứa tiếng cười và cả những giây phút lắng đọng khi phải nói lời tạm biệt. Tất cả đã góp phần tạo nên một thanh xuân rực rỡ, giản dị mà sâu sắc.
+
+            Nhân dịp đặc biệt này, tập thể lớp 12A xin trân trọng gửi đến quý thầy cô và các bạn tờ báo tường điện tử nhỏ bé nhưng chứa đựng biết bao tâm tư, tình cảm và lòng biết ơn chân thành của chúng em. Đây không chỉ là nơi lưu giữ kỷ niệm, mà còn là lời tri ân sâu sắc gửi đến những người đã luôn âm thầm dõi theo, nâng đỡ và chắp cánh cho ước mơ của chúng em suốt chặng đường vừa qua.
+
+            Dẫu mai này mỗi người một phương trời, chúng em tin rằng những ký ức dưới mái trường này sẽ mãi là điểm tựa tinh thần, là hành trang quý giá theo chúng em trên con đường phía trước.
+
+            Trân trọng và biết ơn,
+             Tập thể lớp 12A</p>
+            <p>Nhân dịp đặc biệt này, tập thể lớp 12A xin gửi đến thầy cô và các bạn một tờ báo tường điện tử nhỏ bé – nơi chứa đựng những tâm tư, tình cảm và lời tri ân chân thành nhất từ trái tim chúng em.</p>
+            <p><strong>Trân trọng,</strong><br>Lớp 12A</p>
+        </section>
+
+        <section id="bai-viet">
+            <h2>Bài Viết Tri Ân</h2>
+            <div class="article">
+                <h3>Ơn Thầy Cô – Người Lái Đò Thầm Lặng</h3>
+                <p>Thầy cô – những người lái đò thầm lặng, ngày ngày bền bỉ đưa chúng em vượt qua dòng sông tri thức mênh mông để cập bến tương lai. Trên hành trình ấy, có những buổi nắng gắt, có những ngày mưa dầm, có cả những lúc sóng gió tưởng chừng khiến chúng em chùn bước, nhưng thầy cô vẫn luôn ở đó, kiên nhẫn dìu dắt, âm thầm hy sinh mà chẳng hề mong nhận lại điều gì. Từng lời giảng, từng ánh mắt quan tâm, từng lời nhắc nhở ân cần đã trở thành hành trang quý giá theo chúng em suốt cuộc đời. Dẫu cho có dùng bao nhiêu lời cảm ơn đi nữa, cũng không thể nói hết được lòng biết ơn sâu sắc mà chúng em luôn khắc ghi trong tim.</p>
+            </div>
+            <div class="article">
+                <h3>Kỷ Niệm Dưới Mái Trường Xưa Yêu Dấu</h3>
+                <p> Dưới mái trường thân thương, chúng em đã cùng nhau trải qua biết bao khoảnh khắc không thể nào quên. Đó là những buổi học nhóm kéo dài đến khuya với bao nỗ lực và quyết tâm, là những tràng cười giòn tan khi thầy cô kể những câu chuyện giản dị mà ấm áp, là cả những giọt nước mắt lặng thầm trong những giây phút chia xa. Tất cả những kỷ niệm ấy, dù vui hay buồn, đều góp phần tạo nên một thời thanh xuân rực rỡ, hồn nhiên và chân thành nhất của chúng em. Đối với mỗi thành viên, 12A1 không chỉ là một lớp học, mà còn là một gia đình – nơi chứa đựng yêu thương, sẻ chia và những ký ức sẽ theo chúng em suốt chặng đường phía trước!</p>
+            </div>
+        </section>
+
+        <section id="anh">
+            <h2>Ảnh </h2>
+            <div class="gallery">
+                <!-- Thay bằng link ảnh thật của bạn -->
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/hjCyHc83/123d5b30-cbeb-470b-adff-fa47ea4fac8b.jpg" alt="Ảnh lớp cuối năm">
+                    <div class="caption">Kỷ niệm lớp đầu năm học</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/L6YFT1Hc/1cb48518-7da0-4ac4-be27-d699e783d19d.jpg" alt="Thầy cô và học sinh">
+                    <div class="caption">Khoảnh khắc đáng nhớ cùng thầy cô</div>
+
+              </div>
+                 <div class="gallery-item">
+                    <img src="https://i.postimg.cc/52Sw71MD/0e41feae-c213-4ad9-bddd-243d8361115d.jpg" alt="Thầy cô và học sinh">
+                    <div class="caption">Khoảnh khắc đáng nhớ </div>
+            </div>
+            <div class="gallery-item">
+                    <img src="https://i.postimg.cc/T1B96c7x/9811348e-cb6b-47bb-9947-49e476831b8d.jpg" alt="Thầy cô và học sinh">
+                    <div class="caption"> Thanh xuân</div>
+
+            
+            </div>
+            </div>
+            <div class="gallery-item">
+                    <img src="https://i.postimg.cc/wTVyb4dY/e6d24f7c-faea-4089-97db-c6caf6bae0d2.jpg" alt="Thầy cô và học sinh">
+                    <div class="caption"> Rực Rỡ</div>
+
+            
+            </div>
+            </div>
+            </div>
+            <div class="gallery-item">
+                    <img src="https://i.postimg.cc/mkTZYRkS/37c17934-57d0-422c-b39c-a2534b0e4060.jpg" alt="Thầy cô và học sinh">
+                    <div class="caption"> Gắn Bó</div>
+        </section>
+        <section id="bay-to">
+    <h2>Góc Bày Tỏ </h2> 
+    <div class="bay-to" style="background: #f8fafc; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); font-size: 1.1rem; line-height: 1.8; color: #2c3e50;">
+        <p>Là người tạo nên trang web báo tường này, chúng em xin gửi đến thầy cô và các bạn những cảm xúc chân thành nhất. Mỗi dòng chữ, mỗi hình ảnh đều là một mảnh ghép nhỏ của tuổi học trò – có lúc vụng về, có lúc ngẫu hứng, nhưng đều được làm bằng sự trân trọng và yêu thương. Mong rằng khi xem lại, thầy cô sẽ mỉm cười, còn chúng ta thì nhớ rằng đã từng có một thời thanh xuân rất đẹp bên nhau. Nếu có chỗ nào chưa hoàn hảo, xin coi đó là “đặc sản” của học sinh chúng em ạ!</p>
+        
+        <p style="text-align: right; font-style: italic; margin-top: 2rem; color: #1e40af;">
+            <strong>Trân trọng và yêu thương,</strong><br>
+            Lê Hiếu – đại diện nhóm 
+        </p>
+    </div>
+</section>
+
+            </div>
+        </section>
+
+    <section id="binh-luan" style="padding: 40px 20px; background: white; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); margin-bottom: 50px;">
+    <h2 style="color: #1e40af; font-size: 2.6rem; text-align: center; margin-bottom: 1.5rem; position: relative;">
+        Góc Bình Luận
+        <span style="position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: #60a5fa; border-radius: 2px;"></span>
+    </h2>
+
+    <p style="text-align: center; color: #555; margin-bottom: 2.5rem; font-size: 1.1rem;">
+        Hãy chia sẻ cảm nghĩ, kỷ niệm hoặc lời nhắn gửi của bạn dành cho lớp và thầy cô nhé!
+    </p>
+
+    <!-- Form bình luận đẹp hơn -->
+    <form id="comment-form" style="max-width: 700px; margin: 0 auto; background: #f8fafc; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+        <div style="margin-bottom: 1.5rem;">
+            <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151;">Họ và tên</label>
+            <input type="text" id="name" name="name" placeholder="Nhập họ tên của bạn..." required
+                   style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s;">
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+            <label for="comment" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151;">Nội dung bình luận</label>
+            <textarea id="comment" name="comment" rows="5" placeholder="Chia sẻ cảm nghĩ của bạn..." required
+                      style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; resize: vertical; transition: border-color 0.3s;"></textarea>
+        </div>
+
+        <button type="submit" 
+                style="width: 100%; padding: 14px; background: #3b82f6; color: white; font-size: 1.1rem; font-weight: 500; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
+            Gửi Bình Luận
+        </button>
+    </form>
+
+    <!-- Thông báo sau khi gửi (hiện tại chỉ giả lập, bạn có thể thêm JS thật sau) -->
+    <div id="success-message" style="display: none; text-align: center; margin-top: 2rem; color: #166534; font-weight: 500;">
+        Cảm ơn bạn! Bình luận đã được gửi thành công. (Hiện tại chỉ hiển thị demo, bạn có thể kết nối Google Forms để lưu thật)
+    </div>
+
+    <!-- Script giả lập gửi form (demo) -->
+    <script>
+        document.getElementById('comment-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Ngăn gửi form thật
+            document.getElementById('success-message').style.display = 'block';
+            this.reset(); // Xóa form sau khi gửi
+            setTimeout(() => {
+                document.getElementById('success-message').style.display = 'none';
+            }, 5000);
+        });
+
+        // Focus effect cho input/textarea
+        const inputs = document.querySelectorAll('#comment-form input, #comment-form textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.style.borderColor = '#3b82f6';
+                input.style.boxShadow = '0 0 0 3px rgba(59,130,246,0.2)';
+            });
+            input.addEventListener('blur', () => {
+                input.style.borderColor = '#d1d5db';
+                input.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</section>
+    </main>
+
+    <footer>
+        <p><strong>Lớp 12A – Trường THPT Lý Thường Kiệt </strong></p>
+        <p>Email: lehieuplmokn@gmail.com | SĐT nhóm: 0366 655 881 </p>
+        <p>Nguồn tham khảo : Internet </p> 
+
+        <div class="social-icons" style="margin: 1.5rem 0;">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p>&copy; 2026 Lớp 12A. All rights reserved.</p>
+    </footer>
+
+    <!-- Back to top -->
+    <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
+
+    <!-- Modal zoom ảnh -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        // Back to top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Modal zoom ảnh
+        const modal = document.getElementById("myModal");
+        const modalImg = document.getElementById("img01");
+        const close = document.querySelector(".close");
+
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.onclick = function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            }
+        });
+
+        close.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
